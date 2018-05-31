@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://latex.codecogs.com/gif.latex?L%28Y%2C%20f%28X%29%29%20%3D%20%5Cleft%5C%7B%5Cbegin%7Bmatrix%7D1%20%2C%26%20Y%20%5Cneq%20f%28X%29%5C%5C%200%20%2C%26%20y%20%3D%20f%28X%29%20%5Cend%7Bmatrix%7D%5Cright.">
 <meta property="og:image" content="http://latex.codecogs.com/gif.latex?L%28Y%2C%20f%28X%29%29%20%3D%20%7CY-f%28X%29%7C">
 <meta property="og:image" content="http://www.csuldw.com/assets/articleImg/4DFDU.png">
-<meta property="og:updated_time" content="2018-04-12T14:34:56.182Z">
+<meta property="og:updated_time" content="2018-05-31T15:07:22.802Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title">
 <meta name="twitter:description" content="机器学习-损失函数转载：https://blog.csdn.net/bryan__/article/details/51332094 损失函数（loss function）是用来估量你模型的预测值f(x)与真实值Y的不一致程度，它是一个非负实值函数,通常使用L(Y, f(x))来表示，损失函数越小，模型的鲁棒性就越好。损失函数是经验风险函数的核心部分，也是结构风险函数重要组成部分。模型的结构风险函">
@@ -178,6 +178,7 @@
         <h1 id="机器学习-损失函数"><a href="#机器学习-损失函数" class="headerlink" title="机器学习-损失函数"></a>机器学习-损失函数</h1><p>转载：<a href="https://blog.csdn.net/bryan__/article/details/51332094" target="_blank" rel="noopener">https://blog.csdn.net/bryan__/article/details/51332094</a></p>
 <p>损失函数（loss function）是用来估量你模型的预测值f(x)与真实值Y的不一致程度，它是一个非负实值函数,通常使用L(Y, f(x))来表示，损失函数越小，模型的鲁棒性就越好。损失函数是<strong>经验风险函数</strong>的核心部分，也是<strong>结构风险函数</strong>重要组成部分。模型的结构风险函数包括了经验风险项和正则项，通常可以表示成如下式子：<br><a href="http://latex.codecogs.com/gif.latex?%24%24%5Ctheta%5E*%20%3D%20%5Carg%20%5Cmin_%5Ctheta%20%5Cfrac%7B1%7D%7BN%7D%7B%7D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20L%28y_i%2C%20f%28x_i%3B%20%5Ctheta%29%20+%20%5Clambda%5C%20%5CPhi%28%5Ctheta%29%24%24" target="_blank" rel="noopener"><img src="http://latex.codecogs.com/gif.latex?%24%24%5Ctheta%5E*%20%3D%20%5Carg%20%5Cmin_%5Ctheta%20%5Cfrac%7B1%7D%7BN%7D%7B%7D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20L%28y_i%2C%20f%28x_i%3B%20%5Ctheta%29%20+%20%5Clambda%5C%20%5CPhi%28%5Ctheta%29%24%24" alt="$$\theta^* = \arg \min_\theta \frac{1}{N}{}\sum_{i=1}^{N} L(y_i, f(x_i; \theta) + \lambda\  \Phi(\theta)$$"></a></p>
 <p>其中，前面的均值函数表示的是经验风险函数，L代表的是损失函数，后面的是正则化项（regularizer）或者叫惩罚项（penalty term），它可以是L1，也可以是L2，或者其他的正则函数。整个式子表示的意思是找到使目标函数最小时的值。下面主要列出几种常见的损失函数。</p>
+<a id="more"></a>
 <h2 id="一、log对数损失函数（逻辑回归）"><a href="#一、log对数损失函数（逻辑回归）" class="headerlink" title="一、log对数损失函数（逻辑回归）"></a>一、log对数损失函数（逻辑回归）</h2><p>有些人可能觉得逻辑回归的损失函数就是平方损失，其实并不是。平方损失函数可以通过线性回归在假设样本是高斯分布的条件下推导得到，而逻辑回归得到的并不是平方损失。在逻辑回归的推导中，它假设样本服从<strong>伯努利分布（0-1分布）</strong>，然后求得满足该分布的似然函数，接着取对数求极值等等。而逻辑回归并没有求似然函数的极值，而是把极大化当做是一种思想，进而推导出它的经验风险函数为：<strong>最小化负的似然函数（即max F(y, f(x)) —-&gt; min -F(y, f(x)))</strong>。从损失函数的视角来看，它就成了log损失函数了。</p>
 <p><strong>log损失函数的标准形式</strong>：</p>
 <p>刚刚说到，取对数是为了方便计算极大似然估计，因为在MLE中，直接求导比较困难，所以通常都是先取对数再求导找极值点。损失函数L(Y, P(Y|X))表达的是样本X在分类Y的情况下，使概率P(Y|X)达到最大值（换言之，</p>
