@@ -8,13 +8,23 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title></title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
+  <meta name="description" content="机器学习中的数据清洗与特征处理综述转自：https://tech.meituan.com/machinelearning-data-feature-process.html 背景随着美团交易规模的逐步增大，积累下来的业务数据和交易数据越来越多，这些数据是美团做为一个团购平台最宝贵的财富。通过对这些数据的分析和挖掘，不仅能给美团业务发展方向提供决策支持，也为业务的迭代指明了方向。目前在美团的团购系统">
+<meta property="og:type" content="article">
 <meta property="og:title">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://yoursite.com/2018/04/12/【转载】机器学习中的数据清洗与特征处理综述-美团/index.html">
 <meta property="og:site_name">
+<meta property="og:description" content="机器学习中的数据清洗与特征处理综述转自：https://tech.meituan.com/machinelearning-data-feature-process.html 背景随着美团交易规模的逐步增大，积累下来的业务数据和交易数据越来越多，这些数据是美团做为一个团购平台最宝贵的财富。通过对这些数据的分析和挖掘，不仅能给美团业务发展方向提供决策支持，也为业务的迭代指明了方向。目前在美团的团购系统">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://tech.meituan.com/img/ml_data_feature_process/ml_frame.png">
+<meta property="og:image" content="http://tech.meituan.com/img/ml_data_feature_process/rank_frame.png">
+<meta property="og:image" content="http://tech.meituan.com/img/ml_data_feature_process/ml_feature_selection_frame.png">
+<meta property="og:image" content="http://tech.meituan.com/img/ml_data_feature_process/ml_feature_increase.png">
+<meta property="og:image" content="http://tech.meituan.com/img/ml_data_feature_process/ml_feature_supervise.png">
+<meta property="og:updated_time" content="2018-06-04T09:11:36.447Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title">
+<meta name="twitter:description" content="机器学习中的数据清洗与特征处理综述转自：https://tech.meituan.com/machinelearning-data-feature-process.html 背景随着美团交易规模的逐步增大，积累下来的业务数据和交易数据越来越多，这些数据是美团做为一个团购平台最宝贵的财富。通过对这些数据的分析和挖掘，不仅能给美团业务发展方向提供决策支持，也为业务的迭代指明了方向。目前在美团的团购系统">
+<meta name="twitter:image" content="http://tech.meituan.com/img/ml_data_feature_process/ml_frame.png">
   
     <link rel="alternative" href="/atom.xml" title="" type="application/atom+xml">
   
@@ -150,61 +160,7 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-【转载】损失函数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="机器学习-损失函数"><a href="#机器学习-损失函数" class="headerlink" title="机器学习-损失函数"></a>机器学习-损失函数</h1><p>转载：<a href="https://blog.csdn.net/bryan__/article/details/51332094" target="_blank" rel="noopener">https://blog.csdn.net/bryan__/article/details/51332094</a></p>
-<p>损失函数（loss function）是用来估量你模型的预测值f(x)与真实值Y的不一致程度，它是一个非负实值函数,通常使用L(Y, f(x))来表示，损失函数越小，模型的鲁棒性就越好。损失函数是<strong>经验风险函数</strong>的核心部分，也是<strong>结构风险函数</strong>重要组成部分。模型的结构风险函数包括了经验风险项和正则项，通常可以表示成如下式子：<br><a href="http://latex.codecogs.com/gif.latex?%24%24%5Ctheta%5E*%20%3D%20%5Carg%20%5Cmin_%5Ctheta%20%5Cfrac%7B1%7D%7BN%7D%7B%7D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20L%28y_i%2C%20f%28x_i%3B%20%5Ctheta%29%20+%20%5Clambda%5C%20%5CPhi%28%5Ctheta%29%24%24" target="_blank" rel="noopener"><img src="http://latex.codecogs.com/gif.latex?%24%24%5Ctheta%5E*%20%3D%20%5Carg%20%5Cmin_%5Ctheta%20%5Cfrac%7B1%7D%7BN%7D%7B%7D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20L%28y_i%2C%20f%28x_i%3B%20%5Ctheta%29%20+%20%5Clambda%5C%20%5CPhi%28%5Ctheta%29%24%24" alt="$$\theta^* = \arg \min_\theta \frac{1}{N}{}\sum_{i=1}^{N} L(y_i, f(x_i; \theta) + \lambda\  \Phi(\theta)$$"></a></p>
-<p>其中，前面的均值函数表示的是经验风险函数，L代表的是损失函数，后面的是正则化项（regularizer）或者叫惩罚项（penalty term），它可以是L1，也可以是L2，或者其他的正则函数。整个式子表示的意思是找到使目标函数最小时的值。下面主要列出几种常见的损失函数。</p>
-        
-          <a class="article-more-a" href="/2018/04/12/【转载】损失函数/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/04/12/【转载】损失函数/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-【转载】机器学习中的数据清洗与特征处理综述-美团" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-【转载】机器学习中的数据清洗与特征处理综述-美团" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
     <div class="article-entry" itemprop="articleBody">
@@ -315,6 +271,27 @@
       
 
       
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
     </div>
     <div class="article-info article-info-index">
       
@@ -322,16 +299,84 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/04/12/【转载】机器学习中的数据清洗与特征处理综述-美团/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/04/12/【转载】机器学习中的数据清洗与特征处理综述-美团/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2018/04/12/【转载】损失函数/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/19/决策树/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">决策树</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -351,107 +396,14 @@
 
 
 
-
   
-    <article id="post-决策树" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/19/决策树/">决策树</a>
-    </h1>
   
 
-        
-        <a href="/2017/12/19/决策树/" class="archive-article-date">
-  	<time datetime="2017-12-18T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="决策树-学习笔记"><a href="#决策树-学习笔记" class="headerlink" title="决策树-学习笔记"></a>决策树-学习笔记</h2><h3 id="1-模型思想"><a href="#1-模型思想" class="headerlink" title="1. 模型思想"></a>1. 模型思想</h3><p>决策树（decision tree）是一个树结构。其每个非叶节点表示一个特征属性，每个分支代表这个特征属性在某个值域上的输出，而每个叶节(leaf)点存放一个类别。</p>
-<p>使用决策树进行决策的过程就是从根节点开始，递归地选择分裂特征，并根据该特征对训练数据进行分割，并按照其值选择输出分支，直到叶子节点，将叶子节点存放的类别作为决策结果。</p>
-<p><strong>核心：</strong></p>
-<ul>
-<li><strong>树的生成</strong></li>
-<li><strong>树的剪枝</strong></li>
-</ul>
-<p><strong>优点：</strong></p>
-<ol>
-<li>复杂度低；</li>
-<li>易于理解；</li>
-</ol>
-<p><strong>缺点：</strong></p>
-<ol>
-<li>过拟合；</li>
-<li>缺失值处理；</li>
-<li>忽略特征与特征间的相关性；(?)</li>
-</ol>
-<p>决策树的关键步骤是分裂特征<strong>，</strong>所谓分裂特征就是在某个节点处按照某一特征属性的不同划分构造不同的分支，其目标是让各个分裂子集尽可能地“纯”。尽可能“纯”就是尽量让一个分裂子集中待分类项属于同一类别。</p>
-<p><strong>判断“纯”的方法不同引出ID3算法，C4.5算法以及CART算法。</strong></p>
-        
-          <a class="article-more-a" href="/2017/12/19/决策树/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">学习笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/12/19/决策树/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
+  
 
   
+
   
 
 
@@ -474,8 +426,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: true,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
