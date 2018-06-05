@@ -20,7 +20,7 @@
 <meta property="og:image" content="http://tech.meituan.com/img/ml_data_feature_process/ml_feature_selection_frame.png">
 <meta property="og:image" content="http://tech.meituan.com/img/ml_data_feature_process/ml_feature_increase.png">
 <meta property="og:image" content="http://tech.meituan.com/img/ml_data_feature_process/ml_feature_supervise.png">
-<meta property="og:updated_time" content="2018-06-04T09:11:36.447Z">
+<meta property="og:updated_time" content="2018-06-04T09:14:48.654Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title">
 <meta name="twitter:description" content="机器学习中的数据清洗与特征处理综述转自：https://tech.meituan.com/machinelearning-data-feature-process.html 背景随着美团交易规模的逐步增大，积累下来的业务数据和交易数据越来越多，这些数据是美团做为一个团购平台最宝贵的财富。通过对这些数据的分析和挖掘，不仅能给美团业务发展方向提供决策支持，也为业务的迭代指明了方向。目前在美团的团购系统">
@@ -167,6 +167,7 @@
       
         <h1 id="机器学习中的数据清洗与特征处理综述"><a href="#机器学习中的数据清洗与特征处理综述" class="headerlink" title="机器学习中的数据清洗与特征处理综述"></a>机器学习中的数据清洗与特征处理综述</h1><p>转自：<a href="https://tech.meituan.com/machinelearning-data-feature-process.html" target="_blank" rel="noopener">https://tech.meituan.com/machinelearning-data-feature-process.html</a></p>
 <h6 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h6><p>随着美团交易规模的逐步增大，积累下来的业务数据和交易数据越来越多，这些数据是美团做为一个团购平台最宝贵的财富。通过对这些数据的分析和挖掘，不仅能给美团业务发展方向提供决策支持，也为业务的迭代指明了方向。目前在美团的团购系统中大量地应用到了机器学习和数据挖掘技术，例如个性化推荐、筛选排序、搜索排序、用户建模等等，为公司创造了巨大的价值。<br>本文主要介绍在美团的推荐与个性化团队实践中的数据清洗与特征挖掘方法。主要内容已经在内部公开课”机器学习InAction系列”讲过，本博客的内容主要是讲座内容的提炼和总结。</p>
+<a id="more"></a>
 <h1 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h1><p><img src="http://tech.meituan.com/img/ml_data_feature_process/ml_frame.png" alt="机器学习框架"><br>如上图所示是一个经典的机器学习问题框架图。数据清洗和特征挖掘的工作是在灰色框中框出的部分，即“数据清洗=&gt;特征，标注数据生成=&gt;模型学习=&gt;模型应用”中的前两个步骤。<br>灰色框中蓝色箭头对应的是离线处理部分。主要工作是</p>
 <ul>
 <li>从原始数据，如文本、图像或者应用数据中清洗出特征数据和标注数据。</li>
