@@ -6,15 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | </title>
+  <title></title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
+  <meta name="description" content="模型融合转载：https://blog.csdn.net/bryan__/article/details/51229032 参考：台大机器学习技法  http://blog.csdn.net/lho2010/article/details/42927287 ​          stacking&amp;amp;blending  http://heamy.readthedocs.io/en/latest">
+<meta property="og:type" content="article">
 <meta property="og:title">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+<meta property="og:url" content="http://yoursite.com/2018/04/12/【转载】模型融合/index.html">
 <meta property="og:site_name">
+<meta property="og:description" content="模型融合转载：https://blog.csdn.net/bryan__/article/details/51229032 参考：台大机器学习技法  http://blog.csdn.net/lho2010/article/details/42927287 ​          stacking&amp;amp;blending  http://heamy.readthedocs.io/en/latest">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://img-blog.csdn.net/20160423234320808?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="https://img-blog.csdn.net/20160424143001019?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="https://img-blog.csdn.net/20160424143930023?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="https://img-blog.csdn.net/20160424144251414?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:updated_time" content="2018-06-12T15:29:21.391Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title">
+<meta name="twitter:description" content="模型融合转载：https://blog.csdn.net/bryan__/article/details/51229032 参考：台大机器学习技法  http://blog.csdn.net/lho2010/article/details/42927287 ​          stacking&amp;amp;blending  http://heamy.readthedocs.io/en/latest">
+<meta name="twitter:image" content="https://img-blog.csdn.net/20160423234320808?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
   
     <link rel="alternative" href="/atom.xml" title="" type="application/atom+xml">
   
@@ -150,106 +159,317 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-【转载】模型融合" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="模型融合"><a href="#模型融合" class="headerlink" title="模型融合"></a>模型融合</h1><p>转载：<a href="https://blog.csdn.net/bryan__/article/details/51229032" target="_blank" rel="noopener">https://blog.csdn.net/bryan__/article/details/51229032</a></p>
+<p>参考：台大机器学习技法  <a href="http://blog.csdn.net/lho2010/article/details/42927287" target="_blank" rel="noopener">http://blog.csdn.net/lho2010/article/details/42927287</a></p>
+<p>​          stacking&amp;blending  <a href="http://heamy.readthedocs.io/en/latest/usage.html" target="_blank" rel="noopener">http://heamy.readthedocs.io/en/latest/usage.html</a></p>
+<p>1.stacking&amp;blending</p>
+<p>blending:</p>
+<p>比如数据分成train和test，对于model_i（比如xgboost,GBDT等等）<br>对train做CV fold=5，使用其中4份做训练数据，另外一份作为val数据，得出模型model_i_j，然后对val预测生成向量v_i_j,对test预测生成向量t_i_j<br>同样的方式做5次，把所有train都预测完一边遍，将5份向量concat对应生成t_i与v_i<br>每个模型都能生成这样两组向量，一个是训练集的，一个是测试集的(测试集的在同一个模型预测多次后取平均)<br>有多少个模型就生成多少维的向量<br>然后在顶层的模型比如LR或者线性模型对t向量进行训练，生成模型对v向量进行预测</p>
+<a id="more"></a>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>model_1</th>
+<th>model_2</th>
+<th>model_3</th>
+<th>model_4</th>
+<th>label</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0.1</td>
+<td>0.2</td>
+<td>0.14</td>
+<td>0.15</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0.2</td>
+<td>0.22</td>
+<td>0.18</td>
+<td>0.3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0.8</td>
+<td>0.7</td>
+<td>0.88</td>
+<td>0.6</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.3</td>
+<td>0.3</td>
+<td>0.2</td>
+<td>0.22</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0.5</td>
+<td>0.3</td>
+<td>0.6</td>
+<td>0.5</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>stacking:</p>
+<p>将数据划分成train,test，然后将train划分成不相交的两部分train_1,train_2</p>
+<p>使用不同的模型对train_1训练，对train_2和test预测，生成两个1维向量，有多少模型就生成多少维向量</p>
+<p>第二层使用前面模型对train_2生成的向量和label作为新的训练集，使用LR或者其他模型训练一个新的模型来预测test生成的向量</p>
+<p><img src="https://img-blog.csdn.net/20160423234320808?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="img"></p>
+<p>两者区别是：</p>
+<p>数据划分方式不同，blending在划分完train,test之后，将train进行cv划分来训练。也就是说第二层用到了第一层的全部数据</p>
+<p>stacking是划分完train,test之后对train划分为2份不相交的数据，一份训练，一份用来生成新的特征，在第二层用来训练，第二层只用到了部分数据</p>
+<p>下面是一个blending代码</p>
+<p><strong>[python]</strong> <a href="https://blog.csdn.net/bryan__/article/details/51229032#" target="_blank" rel="noopener">view plain</a> <a href="https://blog.csdn.net/bryan__/article/details/51229032#" target="_blank" rel="noopener">copy</a></p>
+<ol>
+<li><span style="font-family:SimSun;">from <strong>future</strong> import division  </span></li>
+<li>import numpy as np  </li>
+<li>import load_data  </li>
+<li>from sklearn.cross_validation import StratifiedKFold  </li>
+<li>from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier, GradientBoostingClassifier  </li>
+<li>from sklearn.linear_model import LogisticRegression  </li>
+<li>from utility import *  </li>
+<li>from evaluator import *  </li>
+<li></li>
+<li></li>
+<li></li>
+<li>def logloss(attempt, actual, epsilon=1.0e-15):  </li>
+<li>​    “””Logloss, i.e. the score of the bioresponse competition. </li>
+<li>​    “””  </li>
+<li>​    attempt = np.clip(attempt, epsilon, 1.0-epsilon)  </li>
+<li>​    return - np.mean(actual <em> np.log(attempt) + (1.0 - actual) </em> np.log(1.0 - attempt))  </li>
+<li></li>
+<li></li>
+<li>if <strong>name</strong> == ‘<strong>main</strong>‘:  </li>
+<li></li>
+<li>​    np.random.seed(0) # seed to shuffle the train set  </li>
+<li></li>
+<li>​    # n_folds = 10  </li>
+<li>​    n_folds = 5  </li>
+<li>​    verbose = True  </li>
+<li>​    shuffle = False  </li>
+<li></li>
+<li></li>
+<li>​    # X, y, X_submission = load_data.load()  </li>
+<li></li>
+<li>​    train_x_id, train_x, train_y = preprocess_train_input()  </li>
+<li>​    val_x_id, val_x, val_y = preprocess_val_input()  </li>
+<li></li>
+<li>​    X = train_x  </li>
+<li>​    y = train_y  </li>
+<li>​    X_submission = val_x  </li>
+<li>​    X_submission_y = val_y  </li>
+<li></li>
+<li>​    if shuffle:  </li>
+<li>​        idx = np.random.permutation(y.size)  </li>
+<li>​        X = X[idx]  </li>
+<li>​        y = y[idx]  </li>
+<li></li>
+<li></li>
+<li>​    skf = list(StratifiedKFold(y, n_folds))  </li>
+<li></li>
+<li>​    clfs = [RandomForestClassifier(n_estimators=100, n_jobs=-1, criterion=’gini’),  </li>
+<li>​            RandomForestClassifier(n_estimators=100, n_jobs=-1, criterion=’entropy’),  </li>
+<li>​            ExtraTreesClassifier(n_estimators=100, n_jobs=-1, criterion=’gini’),  </li>
+<li>​            ExtraTreesClassifier(n_estimators=100, n_jobs=-1, criterion=’entropy’),  </li>
+<li>​            GradientBoostingClassifier(learning_rate=0.05, subsample=0.5, max_depth=6, n_estimators=50)]  </li>
+<li></li>
+<li>​    print “Creating train and test sets for blending.”  </li>
+<li>​      </li>
+<li>​    dataset_blend_train = np.zeros((X.shape[0], len(clfs)))  </li>
+<li>​    dataset_blend_test = np.zeros((X_submission.shape[0], len(clfs)))  </li>
+<li>​      </li>
+<li>​    for j, clf in enumerate(clfs):  </li>
+<li>​        print j, clf  </li>
+<li>​        dataset_blend_test_j = np.zeros((X_submission.shape[0], len(skf)))  </li>
+<li>​        for i, (train, test) in enumerate(skf):  </li>
+<li>​            print “Fold”, i  </li>
+<li>​            X_train = X[train]  </li>
+<li>​            y_train = y[train]  </li>
+<li>​            X_test = X[test]  </li>
+<li>​            y_test = y[test]  </li>
+<li>​            clf.fit(X_train, y_train)  </li>
+<li>​            y_submission = clf.predict_proba(X_test)[:,1]  </li>
+<li>​            dataset_blend_train[test, j] = y_submission  </li>
+<li>​            dataset_blend_test_j[:, i] = clf.predict_proba(X_submission)[:,1]  </li>
+<li>​        dataset_blend_test[:,j] = dataset_blend_test_j.mean(1)  </li>
+<li>​        print(“val auc Score: %0.5f” % (evaluate2(dataset_blend_test[:,j], X_submission_y)))  </li>
+<li></li>
+<li>​    print  </li>
+<li>​    print “Blending.”  </li>
+<li>​    # clf = LogisticRegression()  </li>
+<li>​    clf = GradientBoostingClassifier(learning_rate=0.02, subsample=0.5, max_depth=6, n_estimators=100)  </li>
+<li>​    clf.fit(dataset_blend_train, y)  </li>
+<li>​    y_submission = clf.predict_proba(dataset_blend_test)[:,1]  </li>
+<li></li>
+<li>​    print “Linear stretch of predictions to [0,1]”  </li>
+<li>​    y_submission = (y_submission - y_submission.min()) / (y_submission.max() - y_submission.min())  </li>
+<li>​    print “blend result”  </li>
+<li>​    print(“val auc Score: %0.5f” % (evaluate2(y_submission, X_submission_y)))  </li>
+<li>​    print “Saving Results.”  </li>
+<li>​    np.savetxt(fname=’blend_result.csv’, X=y_submission, fmt=’%0.9f’)  </li>
+<li>  </li>
+</ol>
+<p>2.rank_avg</p>
+<p>这种融合方法适合排序评估指标，比如auc之类的</p>
+<p><img src="https://img-blog.csdn.net/20160424143001019?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="img"></p>
+<p>其中weight_i为该模型权重，权重为1表示平均融合</p>
+<p>rank_i表示样本的升序排名 ，也就是越靠前的样本融合后也越靠前</p>
+<p>能较快的利用排名融合多个模型之间的差异，而不用去加权样本的概率值融合</p>
+<p>3.weighted</p>
+<p>加权融合，给模型一个权重weight，然后加权得到最终结果</p>
+<p>weight为0.5时为均值融合，result_i为模型i的输出</p>
+<p>一般会考虑多个模型之间的相似度和得分情况</p>
+<p>得分高的模型权重大，尽量融合相似度相对低的模型</p>
+<p><img src="https://img-blog.csdn.net/20160424143930023?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="img"></p>
+<p>4.bagging</p>
+<p>从特征，参数，样本的多样性差异性来做多模型融合，参考随机森林</p>
+<p><img src="https://img-blog.csdn.net/20160424144251414?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="img"></p>
+<p>5.boosting</p>
+<p>参考adaboost，gbdt，xgboost</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/12/【转载】模型融合/" class="archive-article-date">
-  	<time datetime="2018-04-12T14:38:43.563Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-12</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/04/12/【转载】模型融合/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/12/【转载】损失函数/" class="archive-article-date">
-  	<time datetime="2018-04-12T14:34:56.181Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-12</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/12/【转载】结合Scikit-learn介绍几种常用的特征选择方法/" class="archive-article-date">
-  	<time datetime="2018-04-12T14:30:55.328Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-12</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
+<nav id="article-nav">
+  
+  
+    <a href="/2018/04/12/【转载】损失函数/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title"></div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/12/【转载】机器学习中的数据清洗与特征处理综述-美团/" class="archive-article-date">
-  	<time datetime="2018-04-12T14:00:08.111Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-12</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
 
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+        
+    </div>
+</aside>
+
+
+
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -272,8 +492,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
